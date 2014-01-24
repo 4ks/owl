@@ -1,0 +1,17 @@
+*.class
+.classpath
+.project
+.settings/
+
+# EditPlus #
+*.bak
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# myeclipse directory #
+bin/
+.metadata/
+META-INF/
