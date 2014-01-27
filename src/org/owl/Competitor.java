@@ -1,5 +1,10 @@
 package org.owl;
 
+/**
+ * 
+ * @author Kim
+ *
+ */
 public class Competitor {
 
 	private String name;

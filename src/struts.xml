@@ -1,0 +1,24 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="owl" extends="json-default" namespace="/">
+		<interceptors>
+			<interceptor name="nullValue" class="org.owl.interceptor.NullValueInterceptor"></interceptor>
+			<interceptor-stack name="owlInterceptorStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="nullValue" />
+			</interceptor-stack>
+		</interceptors>
+		
+		<default-interceptor-ref name="owlInterceptorStack"></default-interceptor-ref>
+	
+        <action name="json" class="org.owl.action.JSONAction">
+            <result name="success" type="json">
+                <param name="root">data</param>
+            </result>
+        </action>
+    </package>
+    
+</struts>

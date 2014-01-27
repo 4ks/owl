@@ -1,4 +1,4 @@
-package org.owl;
+package org.owl.site;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,19 +8,18 @@ import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.owl.Competitor;
+import org.owl.util.TimeUtils;
 
 /**
  * 
  * @author Kim
  * 
  */
-public class Supervisor {
+public class TaoBaoSupervisor {
 
-	private static final Log log = LogFactory.getLog(Supervisor.class);
+	private static final Log log = LogFactory.getLog(TaoBaoSupervisor.class);
 
-	/**
-	 * 根据淘宝链接URL去获取竞争对手价格信息
-	 */
 	public static Competitor exe(String urlStr) {
 		Competitor competitor = null;
 		
@@ -45,30 +44,32 @@ public class Supervisor {
 				
 				String strb2 = strb.substring(strb.indexOf("\"quotas\":"));
 				
-				strb1 = strb1.substring(strb1.indexOf("[") + 1, strb1.indexOf("]"));
-				strb2 = strb2.substring(strb2.indexOf("[") + 1, strb2.indexOf("]"));
+				String prices = strb1.substring(strb1.indexOf("[") + 1, strb1.indexOf("]"));
+				String quotas = strb2.substring(strb2.indexOf("[") + 1, strb2.indexOf("]"));
 				
 				competitor = new Competitor();
-				competitor.setPrices(strb1);
-				competitor.setQuotas(strb2);
+				competitor.setPrices(prices);
+				competitor.setQuotas(quotas);
+				competitor.setUrl(urlStr);
+				competitor.setStartDate(TimeUtils.current());
 			}
 		} catch (MalformedURLException e) {
-			log.error("URL格式错误", e);
+			log.error("URL鏍煎紡閿欒", e);
 		} catch (IOException e) {
-			log.error("读取URL内容", e);
+			log.error("鑾峰彇娣樺疂閰掑簵浠锋牸", e);
 		} finally {
 			if (br != null) {
 				try {
 					br.close();
 				} catch (IOException e) {
-					log.error("关闭BufferedReader", e);
+					log.error("鍏抽棴BufferedReader", e);
 				}
 			}
 			if (isr != null) {
 				try {
 					isr.close();
 				} catch (IOException e) {
-					log.error("关闭InputStreamReader", e);
+					log.error("鍏抽棴InputStreamReader", e);
 				}
 			}
 		}

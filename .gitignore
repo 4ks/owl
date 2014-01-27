@@ -15,4 +15,5 @@ classes/
 # myeclipse directory #
 bin/
 .metadata/
+.mymetadata
 META-INF/
