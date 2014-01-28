@@ -25,6 +25,8 @@ public class JSONAction implements Action {
 	/**
 	 * <p>客户端传过来的包含酒店价格信息的url地址参数。作为抓取价格的目标网页。</p>
 	 * <p>必须为淘宝旅行某卖家的酒店宝贝链接。</p>
+	 * 
+	 * FIXME url中包含"&"链接符，这跟用户通过地址栏使用本接口，会发生冲突。我决定改用"房型编号"作为输入参数。
 	 */
 	private String[] urls;
 
