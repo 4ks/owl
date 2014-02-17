@@ -1,29 +1,34 @@
 package org.owl.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 房型
+ * 
  * @author Kim
- *
+ * 
  */
 public class Room {
 
-	private long id;
-	private String name;
-	
+	private String id;
+
 	/**
-	 * 房型编号。生成规则6位随机数字
+	 * 房型名称
+	 */
+	private String name;
+
+	/**
+	 * 房型编号。生成规则8位随机数字
 	 */
 	private int cd;
 
+	/**
+	 * 所属的酒店
+	 */
 	private Hotel hotel;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
+	
+	private Set<Competitor> competitors = new HashSet<Competitor>(0);
 
 	public String getName() {
 		return name;
@@ -47,6 +52,22 @@ public class Room {
 
 	public void setHotel(Hotel hotel) {
 		this.hotel = hotel;
+	}
+
+	public Set<Competitor> getCompetitors() {
+		return competitors;
+	}
+
+	public void setCompetitors(Set<Competitor> competitors) {
+		this.competitors = competitors;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

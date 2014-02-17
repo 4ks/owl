@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.owl.entity">
+	<class name="Room" table="room">
+		<id name="id" type="java.lang.String">
+			<column name="id" length="32"></column>
+			<generator class="uuid"></generator>
+		</id>
+		
+		<property name="name" not-null="true" length="100"></property>
+		<property name="cd" type="int" update="false" not-null="true" unique="true"></property>
+		
+		<many-to-one name="hotel" column="hotel_id" class="Hotel" not-null="true" cascade="save-update"></many-to-one>
+		
+		<set name="competitors" inverse="true" cascade="delete">
+			<key column="room_id"></key>
+			<one-to-many class="Competitor" />
+		</set>
+	</class>
+</hibernate-mapping>

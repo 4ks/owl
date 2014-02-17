@@ -8,19 +8,20 @@ import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.owl.Competitor;
+import org.owl.json.Competitor;
 import org.owl.util.TimeUtils;
 
 /**
+ * 淘宝网价格抓取
  * 
  * @author Kim
  * 
  */
-public class TaoBaoSupervisor {
+public class TaoBaoSupervisor implements Supervisor {
 
 	private static final Log log = LogFactory.getLog(TaoBaoSupervisor.class);
 
-	public static Competitor exe(String urlStr) {
+	public Competitor exe(String urlStr) {
 		Competitor competitor = null;
 		
 		InputStreamReader isr = null;
@@ -53,6 +54,16 @@ public class TaoBaoSupervisor {
 				competitor.setUrl(urlStr);
 				competitor.setStartDate(TimeUtils.current());
 			}
+			
+			
+			//实价有房
+			int index = urlContent.indexOf("J_RealPrice");
+			String realRoom = urlContent.substring(index, urlContent.indexOf("title", index));
+			if (realRoom.indexOf("hidden") > 0) {
+				competitor.setRealRoom("can");
+			} else {
+				competitor.setRealRoom("shi");
+			}
 		} catch (MalformedURLException e) {
 			log.error("URL格式错误", e);
 		} catch (IOException e) {
@@ -75,6 +86,10 @@ public class TaoBaoSupervisor {
 		}
 		
 		return competitor;
+	}
+
+	public boolean verify(String urlStr) {
+		return false;
 	}
 
 }

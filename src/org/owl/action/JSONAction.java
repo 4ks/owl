@@ -8,7 +8,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.owl.Competitor;
+import org.owl.json.Competitor;
+import org.owl.site.Supervisor;
 import org.owl.site.TaoBaoSupervisor;
 
 import com.opensymphony.xwork2.Action;
@@ -18,7 +19,7 @@ import com.opensymphony.xwork2.Action;
  * @author Kim 2014-01-26 13:46
  * @version 0.0.1
  */
-public class JSONAction implements Action {
+public class JSONAction implements Action, ResultAction {
 
 	private static final Log log = LogFactory.getLog(JSONAction.class);
 
@@ -26,7 +27,7 @@ public class JSONAction implements Action {
 	 * <p>客户端传过来的包含酒店价格信息的url地址参数。作为抓取价格的目标网页。</p>
 	 * <p>必须为淘宝旅行某卖家的酒店宝贝链接。</p>
 	 * 
-	 * FIXME url中包含"&"链接符，这跟用户通过地址栏使用本接口，会发生冲突。我决定改用"房型编号"作为输入参数。
+	 * FIXME url中包含"&"链接符，这跟用户通过地址栏使用本接口，会发生冲突。改用"房型编号"作为输入参数。
 	 */
 	private String[] urls;
 
@@ -35,12 +36,6 @@ public class JSONAction implements Action {
 	 * <p>在目前版本，data变量只包含competitors这一个键值对值，如{"success":0, "competitors":[]}</p>
 	 */
 	private Map<String, Object> data;
-
-	private static final String COMPETITORS_KEY = "competitors";
-	private static final String SUCCESS_KEY = "success";
-	
-	private static final int SUCCESS_VAL = 0;
-	private static final int URLS_IS_NULL = 1;
 
 	public String execute() {
 		try {
@@ -54,22 +49,36 @@ public class JSONAction implements Action {
 				return SUCCESS;
 			}
 
+			Supervisor supervisor = new TaoBaoSupervisor();
 			for (int i = 0, le = urls.length; i < le; i++) {
 				String url = urls[i];
+				String outerId = null;
 				if (StringUtils.isNotBlank(url)) {
 					url = url.trim();
-					Competitor competitor = TaoBaoSupervisor.exe(url);
+					
+					log.info(url);
+					
+					int index = url.lastIndexOf("/");
+					outerId = url.substring(index + 1);
+					
+					String targetUrl = url.substring(0, index);
+					
+					Competitor competitor = supervisor.exe(targetUrl);
+					competitor.setOuterId(outerId);
 
 					competitorList.add(competitor);
 				}
 			}
 			data.put(SUCCESS_KEY, SUCCESS_VAL);
 		} catch (Exception e) {
-			log.error("获取价格信息", e);
+			log.error("获取urls中的价格信息", e);
 		}
 		return SUCCESS;
 	}
 
+	/**
+	 * 销毁方法。通过Spring调用。
+	 */
 	public void distory() {
 		urls = null;
 		data = null;
