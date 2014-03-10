@@ -1,25 +1,42 @@
 package org.owl.json;
 
 /**
+ * 对外服务中返回JSON的格式对象。
  * 
  * @author Kim
  *
  */
 public class Competitor {
 	
+	/**
+	 * 外部ID，由调用者维护。
+	 */
 	private String outerId;
 	
+	/**
+	 * 价格开始日期
+	 */
 	private String startDate;
 
+	/**
+	 * 酒店价格
+	 */
 	private String prices;
 	
+	/**
+	 * 酒店房态
+	 */
 	private String quotas;
 	
+	/**
+	 * 酒店url地址
+	 */
 	private String url;
 	
 	/**
-	 * 淘宝网上"实价有房"标记
+	 * 淘宝网上"实价有房"标记。即将删除。
 	 */
+	@Deprecated
 	private String realRoom;
 
 	public String getPrices() {

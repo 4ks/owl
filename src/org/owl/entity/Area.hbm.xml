@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.owl.entity">
+	<class name="Area" table="area">
+		<id name="id" type="int">
+			<generator class="assigned"></generator>
+		</id>
+		
+		<property name="type" type="int" update="false"></property>
+		<property name="name" not-null="true" length="50" update="false"></property>
+		<property name="parentId" type="integer" update="false"></property>
+		<property name="zip" length="10" update="false"></property>
+	</class>
+</hibernate-mapping>

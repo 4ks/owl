@@ -3,6 +3,15 @@
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
+	<constant name="struts.action.extension" value="action" />
+	<constant name="struts.objectFactory" value="spring" />
+	
+	<package name="owl-html" extends="struts-default" namespace="/">
+		<action name="htmlAction" class="roomAction">
+			<result name="success">/html.jsp</result>
+		</action>
+	</package>
+
 	<package name="owl" extends="json-default" namespace="/">
 		<interceptors>
 			<interceptor name="nullValue" class="org.owl.interceptor.NullValueInterceptor"></interceptor>
@@ -11,14 +20,20 @@
 				<interceptor-ref name="nullValue" />
 			</interceptor-stack>
 		</interceptors>
-		
+
 		<default-interceptor-ref name="owlInterceptorStack"></default-interceptor-ref>
-	
-        <action name="json" class="org.owl.action.JSONAction">
-            <result name="success" type="json">
-                <param name="root">data</param>
-            </result>
-        </action>
-    </package>
-    
+
+		<action name="json" class="jsonAction">
+			<result name="success" type="json">
+				<param name="root">data</param>
+			</result>
+		</action>
+		
+		<action name="rcd" class="roomAction">
+			<result name="success" type="json">
+				<param name="root">data</param>
+			</result>
+		</action>
+	</package>
+
 </struts>

@@ -16,11 +16,25 @@
 		<property name="dialect">
 			org.hibernate.dialect.MySQLDialect
 		</property>
-		<property name="hbm2ddl.auto">create</property>
+		<property name="hbm2ddl.auto">update</property>
 		<property name="show_sql">true</property>
-
+		
+		<!--  
+		<property name="hibernate.connection.provider_class">
+			org.hibernate.connection.C3P0ConnectionProvider
+		</property>  
+		<property name="hibernate.c3p0.max_size">20</property>
+		<property name="hibernate.c3p0.min_size">5</property>
+		<property name="hibernate.c3p0.timeout">50000</property>
+		<property name="hibernate.c3p0.max_statements">100</property>
+		<property name="hibernate.c3p0.idle_test_period">3000</property>
+		<property name="hibernate.c3p0.acquire_increment">2</property>
+		<property name="hibernate.c3p0.validate">false</property>
+		-->
+		
 		<mapping resource="org/owl/entity/Hotel.hbm.xml" />
 		<mapping resource="org/owl/entity/Room.hbm.xml" />
 		<mapping resource="org/owl/entity/Competitor.hbm.xml" />
+		<mapping resource="org/owl/entity/Area.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

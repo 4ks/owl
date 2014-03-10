@@ -23,9 +23,16 @@ public class CompetitorServiceImpl implements CompetitorService {
 	public String save(Competitor competitor) {
 		return competitorDao.save(competitor);
 	}
+	
+	@Transactional
+	public String update(Competitor competitor) {
+		return competitorDao.update(competitor);
+	}
 
 	public void setCompetitorDao(CompetitorDao competitorDao) {
 		this.competitorDao = competitorDao;
 	}
+
+
 
 }

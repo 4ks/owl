@@ -27,4 +27,9 @@ public class CompetitorDaoImpl extends HibernateDaoSupport implements Competitor
 		return competitor.getId();
 	}
 
+	public String update(Competitor competitor) {
+		this.getHibernateTemplate().update(competitor);
+		return competitor.getId();
+	}
+
 }

@@ -12,7 +12,7 @@ import org.owl.json.Competitor;
 import org.owl.util.TimeUtils;
 
 /**
- * 淘宝网价格抓取
+ * 淘宝网酒店价格抓取
  * 
  * @author Kim
  * 
@@ -26,12 +26,13 @@ public class TaoBaoSupervisor implements Supervisor {
 		
 		InputStreamReader isr = null;
 		BufferedReader br = null;
+		
+		StringBuffer str = new StringBuffer();
 		try {
 			URL url = new URL(urlStr);
 			isr = new InputStreamReader(url.openStream());
 			br = new BufferedReader(isr);
 			
-			StringBuffer str = new StringBuffer();
 			String strb = null;
 			while ((strb = br.readLine()) != null) {
 				str.append(strb);
@@ -55,7 +56,6 @@ public class TaoBaoSupervisor implements Supervisor {
 				competitor.setStartDate(TimeUtils.current());
 			}
 			
-			
 			//实价有房
 			int index = urlContent.indexOf("J_RealPrice");
 			String realRoom = urlContent.substring(index, urlContent.indexOf("title", index));
@@ -66,21 +66,22 @@ public class TaoBaoSupervisor implements Supervisor {
 			}
 		} catch (MalformedURLException e) {
 			log.error("URL格式错误", e);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			log.error("获取淘宝酒店价格", e);
+			log.error("淘宝网页html内容：" + str);
 		} finally {
 			if (br != null) {
 				try {
 					br.close();
 				} catch (IOException e) {
-					log.error("关闭BufferedReader", e);
+					log.error("closing BufferedReader", e);
 				}
 			}
 			if (isr != null) {
 				try {
 					isr.close();
 				} catch (IOException e) {
-					log.error("关闭InputStreamReader", e);
+					log.error("closing InputStreamReader", e);
 				}
 			}
 		}
@@ -88,7 +89,28 @@ public class TaoBaoSupervisor implements Supervisor {
 		return competitor;
 	}
 
+	/**
+	 * 淘宝网域名.用于检查参数url是否适合本类
+	 */
+	private static final String HOST = "taobao.com";
+	
+	/**
+	 * 检验url是否属于淘宝网。<br />
+	 * 属于淘宝网，返回true；反之，返回false;
+	 */
 	public boolean verify(String urlStr) {
+		try {
+			URL url = new URL(urlStr);
+			String host = url.getHost();
+			log.info("the host is " + host);
+			
+			boolean b = host.endsWith(HOST);
+			log.info("verified url[" + urlStr + "] : " + b);
+			
+			return b;
+		} catch (MalformedURLException e) {
+			log.error("verify url", e);
+		}
 		return false;
 	}
 

@@ -9,6 +9,8 @@ public interface CompetitorDao {
 	
 	String save(Competitor competitor);
 	
+	String update(Competitor competitor);
+	
 	List<Competitor> find(CompetitorFinder competitorFinder);
 
 }

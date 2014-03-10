@@ -44,5 +44,7 @@
 	<bean id="roomAction" class="org.owl.action.RoomAction" scope="prototype">
 		<property name="competitorService" ref="competitorService"></property>
 	</bean>
-
+	
+	<bean id="jsonAction" class="org.owl.action.JSONAction" scope="prototype"></bean>
+	
 </beans>
