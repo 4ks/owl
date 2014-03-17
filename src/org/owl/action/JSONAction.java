@@ -38,20 +38,21 @@ public class JSONAction implements Action, ResultAction {
 	private Map<String, Object> data;
 
 	public String execute() {
-		try {
-			if (urls == null) {
-				data.put(SUCCESS_KEY, URLS_IS_NULL);
-				return SUCCESS;
-			}
-			
-			data = new HashMap<String, Object>();
-			List<Competitor> competitorList = new ArrayList<Competitor>();
+		data = new HashMap<String, Object>();
+		if (urls == null) {
+			data.put(SUCCESS_KEY, URLS_IS_NULL);
+			return SUCCESS;
+		}
+		
+		List<Competitor> competitorList = new ArrayList<Competitor>();
 
-			Supervisor supervisor = new TaoBaoSupervisor();
-			for (int i = 0, le = urls.length; i < le; i++) {
-				String url = urls[i];
-				String outerId = null;
-				if (StringUtils.isNotBlank(url)) {
+		Supervisor supervisor = new TaoBaoSupervisor();
+		
+		for (int i = 0, le = urls.length; i < le; i++) {
+			String url = urls[i];
+			String outerId = null;
+			if (StringUtils.isNotBlank(url)) {
+				try {
 					url = url.trim();
 					
 					log.info(url);
@@ -65,16 +66,16 @@ public class JSONAction implements Action, ResultAction {
 					competitor.setOuterId(outerId);
 
 					competitorList.add(competitor);
+				} catch (Exception e) {
+					log.error("获取urls中的价格信息", e);
 				}
 			}
-			
-			// 为统一Map的键值，需引用ResultAction中的常量
-			data.put(COMPETITORS_KEY, competitorList);
-			data.put(SUCCESS_KEY, SUCCESS_VAL);
-		} catch (Exception e) {
-			log.error("获取urls中的价格信息", e);
-			data.put(SUCCESS_KEY, ResultAction.ERROR);
 		}
+		
+		// 为统一Map的键值，需引用ResultAction中的常量
+		data.put(COMPETITORS_KEY, competitorList);
+		data.put(SUCCESS_KEY, SUCCESS_VAL);
+		
 		return SUCCESS;
 	}
 
